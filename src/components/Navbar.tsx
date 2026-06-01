@@ -37,6 +37,7 @@ export default function Navbar() {
         <Link 
           href="/" 
           className="text-white font-bold tracking-wider text-lg bg-gradient-to-r from-white via-[#00D9FF] to-[#0052FF] bg-clip-text text-transparent hover:from-[#00D9FF] hover:to-[#0052FF] transition-all duration-300"
+          aria-label="Ensure & Construct - Home"
         >
           Ensure & Construct
         </Link>

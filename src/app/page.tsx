@@ -59,7 +59,6 @@ export default function Home() {
               >
                 <h1 
                   className="text-6xl sm:text-7xl md:text-8xl font-black text-white mb-6 tracking-tighter drop-shadow-2xl leading-tight"
-                  aria-label="Ensure & Construct"
                 >
                   <span className="text-gradient-cyan">Ensure</span>
                   <br />

@@ -65,10 +65,9 @@ export default function Navbar() {
         <motion.button 
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="btn-nav"
+          className="btn-nav group"
         >
           <span className="relative z-10">Start Project</span>
-          <div className="absolute inset-0 bg-gradient-to-r from-accent-primary to-accent-secondary opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-lg" />
         </motion.button>
       </div>
     </motion.header>

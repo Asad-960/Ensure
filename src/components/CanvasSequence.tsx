@@ -9,6 +9,7 @@ interface CanvasSequenceProps {
 
 export default function CanvasSequence({ frameCount }: CanvasSequenceProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const resizeTimeoutRef = useRef<NodeJS.Timeout>();
   const { scrollYProgress } = useScroll();
   const [images, setImages] = useState<HTMLImageElement[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -135,11 +136,11 @@ export default function CanvasSequence({ frameCount }: CanvasSequenceProps) {
 
   // Handle window resize with debouncing
   useEffect(() => {
-    let resizeTimeout: NodeJS.Timeout;
-    
     const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+      }
+      resizeTimeoutRef.current = setTimeout(() => {
         if (canvasRef.current) {
           canvasRef.current.width = window.innerWidth;
           canvasRef.current.height = window.innerHeight;
@@ -154,7 +155,9 @@ export default function CanvasSequence({ frameCount }: CanvasSequenceProps) {
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
-      clearTimeout(resizeTimeout);
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loaded, frameIndex]);

@@ -57,7 +57,10 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <h1 className="text-6xl sm:text-7xl md:text-8xl font-black text-white mb-6 tracking-tighter drop-shadow-2xl leading-tight">
+                <h1 
+                  className="text-6xl sm:text-7xl md:text-8xl font-black text-white mb-6 tracking-tighter drop-shadow-2xl leading-tight"
+                  aria-label="Ensure & Construct"
+                >
                   <span className="text-gradient-cyan">Ensure</span>
                   <br />
                   & Construct

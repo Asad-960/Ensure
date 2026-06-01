@@ -76,9 +76,10 @@ export default function CanvasSequence({ frameCount }: CanvasSequenceProps) {
     ctx.imageSmoothingQuality = "high";
 
     // Maintain aspect ratio while covering the canvas
+    // Using 'min' for 'contain' to ensure the whole building is visible without cropping
     const hRatio = canvas.width / img.width;
     const vRatio = canvas.height / img.height;
-    const ratio = Math.max(hRatio, vRatio); // Use max for 'cover'
+    const ratio = Math.min(hRatio, vRatio); // Use min for 'contain'
     
     const centerShift_x = (canvas.width - img.width * ratio) / 2;
     const centerShift_y = (canvas.height - img.height * ratio) / 2;
@@ -146,7 +147,7 @@ export default function CanvasSequence({ frameCount }: CanvasSequenceProps) {
             drawFrame(Math.min(frameCount - 1, Math.max(0, Math.floor(frameIndex.get()) - 1)));
           }
         }
-      }, 150);
+      }, 100);
     };
 
     handleResize(); // Initial setup

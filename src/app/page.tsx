@@ -180,7 +180,7 @@ export default function Home() {
                 <motion.button 
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="text-white/60 hover:text-white transition-colors text-lg font-light underline underline-offset-4 decoration-white/20 hover:decoration-white hover:decoration-opacity-100 duration-300"
+                  className="text-white/60 hover:text-white transition-colors text-lg font-light underline underline-offset-4 decoration-white/20 hover:decoration-white duration-300"
                 >
                   See full capabilities
                 </motion.button>

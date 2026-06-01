@@ -11,11 +11,11 @@ const config: Config = {
       fontFamily: {
         sans: [
           'system-ui',
-          'segoe-ui',
+          '"Segoe UI"',
           'roboto',
-          'helvetica-neue',
+          '"Helvetica Neue"',
           'arial',
-          'noto-sans',
+          '"Noto Sans"',
           'sans-serif',
         ],
       },

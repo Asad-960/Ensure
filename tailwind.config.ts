@@ -8,20 +8,42 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: [
+          'system-ui',
+          'segoe-ui',
+          'roboto',
+          'helvetica-neue',
+          'arial',
+          'noto-sans',
+          'sans-serif',
+        ],
+      },
       colors: {
-        background: "#101010",
-        foreground: "rgba(255, 255, 255, 0.9)",
-        secondary: "#0A0A0C",
+        background: "#0A0A0A",
+        foreground: "rgba(255, 255, 255, 0.95)",
+        secondary: "#0F0F12",
         accent: {
-          primary: "#0050FF",
-          secondary: "#00D6FF",
+          primary: "#0052FF",
+          secondary: "#00D9FF",
+          tertiary: "#FF6B35",
         },
-        body: "rgba(255, 255, 255, 0.6)",
+        body: "rgba(255, 255, 255, 0.65)",
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-hero': 'radial-gradient(circle at center, #151515 0%, #101010 70%)',
-      }
+        'gradient-hero': 'radial-gradient(circle at center, #1A1A1E 0%, #0A0A0A 70%)',
+        'gradient-premium': 'linear-gradient(135deg, #0052FF 0%, #00D9FF 100%)',
+        'gradient-dark': 'linear-gradient(180deg, rgba(0, 82, 255, 0.1) 0%, rgba(0, 217, 255, 0.05) 100%)',
+      },
+      boxShadow: {
+        'premium': '0 20px 60px rgba(0, 82, 255, 0.15)',
+        'premium-lg': '0 30px 80px rgba(0, 82, 255, 0.2)',
+        'glow': '0 0 30px rgba(0, 217, 255, 0.3)',
+      },
+      backdropBlur: {
+        'premium': '12px',
+      },
     },
   },
   plugins: [],

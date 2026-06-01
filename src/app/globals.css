@@ -8,6 +8,7 @@
   }
   body {
     @apply bg-background text-body font-sans antialiased overflow-x-hidden;
+    background-color: #0A0A0A;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply text-foreground font-bold tracking-tight;
@@ -18,10 +19,64 @@
   .text-balance {
     text-wrap: balance;
   }
+  
   .glass-nav {
-    @apply bg-black/75 backdrop-blur-md border-b border-white/5;
+    @apply bg-black/60 backdrop-blur-xl border-b border-white/5;
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0.7) 0%, rgba(15, 15, 18, 0.5) 100%);
   }
+  
+  .glass-morphism {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+  
   .text-gradient-cyan {
-    @apply bg-clip-text text-transparent bg-gradient-to-b from-white to-[#00D6FF];
+    @apply bg-clip-text text-transparent bg-gradient-to-b from-white via-[#00D9FF] to-[#0052FF];
+  }
+  
+  .text-gradient-primary {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#0052FF] to-[#00D9FF];
+  }
+  
+  .btn-premium {
+    @apply relative px-8 py-4 rounded-xl text-lg font-semibold text-white;
+    @apply border border-accent-secondary/40 transition-all duration-500 overflow-hidden;
+    background: linear-gradient(135deg, rgba(0, 82, 255, 0.1) 0%, rgba(0, 217, 255, 0.05) 100%);
+  }
+  
+  .btn-premium:hover {
+    @apply shadow-premium border-accent-secondary/80;
+    background: linear-gradient(135deg, rgba(0, 82, 255, 0.15) 0%, rgba(0, 217, 255, 0.1) 100%);
+  }
+  
+  .vignette-overlay {
+    @apply absolute inset-0 pointer-events-none;
+    background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+  }
+  
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shimmer 2s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
   }
 }

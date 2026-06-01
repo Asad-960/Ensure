@@ -38,7 +38,7 @@ export default function Navbar() {
           href="/" 
           className="text-white font-bold tracking-wider text-lg bg-gradient-to-r from-white via-[#00D9FF] to-[#0052FF] bg-clip-text text-transparent hover:from-[#00D9FF] hover:to-[#0052FF] transition-all duration-300"
         >
-          Ensure &amp; Construct
+          Ensure & Construct
         </Link>
 
         {/* Center: Links */}
@@ -55,7 +55,7 @@ export default function Navbar() {
                 className="text-white/60 hover:text-white transition-colors duration-300 relative group"
               >
                 {item}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-accent-primary to-accent-secondary group-hover:w-full transition-all duration-300" />
+                <span className="absolute bottom-[-2px] left-0 w-0 h-0.5 bg-gradient-to-r from-accent-primary to-accent-secondary group-hover:w-full transition-all duration-300" />
               </Link>
             </motion.div>
           ))}

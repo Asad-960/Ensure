@@ -12,17 +12,14 @@ export default function Navbar() {
     setIsMounted(true);
   }, []);
 
-  // Fade in the navbar background and border after scrolling 50px
-  const bgOpacity = useTransform(scrollY, [0, 50], [0, 0.75]);
-  const backdropBlur = useTransform(scrollY, [0, 50], [0, 12]);
-  const borderColor = useTransform(
-    scrollY,
-    [0, 50],
-    ["rgba(255,255,255,0)", "rgba(255,255,255,0.05)"]
-  );
+  // Enhanced scroll-based animations
+  const bgOpacity = useTransform(scrollY, [0, 80], [0, 0.9]);
+  const backdropBlur = useTransform(scrollY, [0, 80], [0, 14]);
+  const borderOpacity = useTransform(scrollY, [0, 80], [0, 0.1]);
 
-  const backgroundColor = useTransform(bgOpacity, (val) => `rgba(5,5,5,${val})`);
+  const backgroundColor = useTransform(bgOpacity, (val) => `rgba(10, 10, 10, ${val})`);
   const backdropFilter = useTransform(backdropBlur, (val) => `blur(${val}px)`);
+  const borderColor = useTransform(borderOpacity, (val) => `rgba(255, 255, 255, ${val})`);
 
   if (!isMounted) return null;
 
@@ -33,33 +30,46 @@ export default function Navbar() {
         backdropFilter,
         borderColor,
       }}
-      className="fixed top-0 left-0 right-0 z-50 h-14 flex items-center border-b px-6 transition-colors duration-300"
+      className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center border-b px-6 transition-all duration-300"
     >
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
-        {/* Left: Logo */}
-        <Link href="/" className="text-white font-medium tracking-wide text-lg">
+        {/* Left: Logo with gradient */}
+        <Link 
+          href="/" 
+          className="text-white font-bold tracking-wider text-lg bg-gradient-to-r from-white via-[#00D9FF] to-[#0052FF] bg-clip-text text-transparent hover:from-[#00D9FF] hover:to-[#0052FF] transition-all duration-300"
+          aria-label="Ensure & Construct - Home"
+        >
           Ensure & Construct
         </Link>
 
         {/* Center: Links */}
-        <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-white/70">
-          {["Overview", "Engineering", "Materials", "Process", "Consultation"].map((item) => (
-            <Link
+        <nav className="hidden md:flex items-center space-x-10 text-sm font-medium">
+          {["Overview", "Engineering", "Materials", "Process", "Consultation"].map((item, idx) => (
+            <motion.div
               key={item}
-              href={`#${item.toLowerCase()}`}
-              className="hover:text-white transition-colors"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
             >
-              {item}
-            </Link>
+              <Link
+                href={`#${item.toLowerCase()}`}
+                className="text-white/60 hover:text-white transition-colors duration-300 relative group"
+              >
+                {item}
+                <span className="absolute bottom-[-2px] left-0 w-0 h-0.5 bg-gradient-to-r from-accent-primary to-accent-secondary group-hover:w-full transition-all duration-300" />
+              </Link>
+            </motion.div>
           ))}
         </nav>
 
         {/* Right: CTA */}
-        <button className="relative group px-4 py-1.5 rounded-full text-sm font-semibold text-white bg-transparent border border-white/20 hover:border-accent-secondary/50 overflow-hidden transition-all duration-300">
+        <motion.button 
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="btn-nav group"
+        >
           <span className="relative z-10">Start Project</span>
-          <div className="absolute inset-0 bg-gradient-to-r from-accent-primary to-accent-secondary opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-accent-primary to-accent-secondary rounded-full opacity-0 group-hover:opacity-30 blur-sm transition-opacity duration-300 -z-10" />
-        </button>
+        </motion.button>
       </div>
     </motion.header>
   );

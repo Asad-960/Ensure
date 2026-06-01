@@ -9,6 +9,7 @@ interface CanvasSequenceProps {
 
 export default function CanvasSequence({ frameCount }: CanvasSequenceProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const resizeTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const { scrollYProgress } = useScroll();
   const [images, setImages] = useState<HTMLImageElement[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -40,7 +41,7 @@ export default function CanvasSequence({ frameCount }: CanvasSequenceProps) {
           };
           img.onerror = () => {
             console.error(`Failed to load frame ${paddedIndex}`);
-            loadedImages[i - 1] = img; // Fallback or handle error appropriately
+            loadedImages[i - 1] = img;
             loadedCount++;
             if (loadedCount === frameCount) {
               setImages(loadedImages);
@@ -65,30 +66,39 @@ export default function CanvasSequence({ frameCount }: CanvasSequenceProps) {
 
   const drawFrame = (index: number) => {
     if (!canvasRef.current || !images[index]) return;
-    const ctx = canvasRef.current.getContext("2d");
+    const ctx = canvasRef.current.getContext("2d", { alpha: true });
     if (!ctx) return;
 
     const img = images[index];
     const canvas = canvasRef.current;
 
-    // Maintain aspect ratio while covering the canvas like object-fit: contain/cover
-    // The prompt requested: "centered and scaled to fit while preserving aspect ratio"
+    // Enable high-quality rendering
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+
+    // Maintain aspect ratio while covering the canvas
+    // Using 'min' for 'contain' to ensure the whole building is visible without cropping
     const hRatio = canvas.width / img.width;
     const vRatio = canvas.height / img.height;
-    const ratio = Math.min(hRatio, vRatio); // Use min for 'contain', max for 'cover'
+    const ratio = Math.min(hRatio, vRatio); // Use min for 'contain'
     
-    // Using min makes sure the whole building is visible without cropping
     const centerShift_x = (canvas.width - img.width * ratio) / 2;
     const centerShift_y = (canvas.height - img.height * ratio) / 2;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // Fill background with exact image dark color to blend edges seamlessly
-    ctx.fillStyle = "#101010";
+    
+    // Enhanced background with subtle gradient
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, "#0A0A0A");
+    gradient.addColorStop(0.5, "#0F0F12");
+    gradient.addColorStop(1, "#0A0A0A");
+    ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     // Crop the bottom 40 pixels to remove the ezgif watermark
     const cropBottom = 40;
 
+    // Draw with high quality
     ctx.drawImage(
       img,
       0,
@@ -100,6 +110,21 @@ export default function CanvasSequence({ frameCount }: CanvasSequenceProps) {
       img.width * ratio,
       (img.height - cropBottom) * ratio
     );
+
+    // Add subtle vignette effect for premium feel
+    const vignetteGradient = ctx.createRadialGradient(
+      canvas.width / 2,
+      canvas.height / 2,
+      0,
+      canvas.width / 2,
+      canvas.height / 2,
+      Math.max(canvas.width, canvas.height)
+    );
+    vignetteGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+    vignetteGradient.addColorStop(0.7, "rgba(0, 0, 0, 0.1)");
+    vignetteGradient.addColorStop(1, "rgba(0, 0, 0, 0.4)");
+    ctx.fillStyle = vignetteGradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
   };
 
   useMotionValueEvent(frameIndex, "change", (latest) => {
@@ -109,30 +134,51 @@ export default function CanvasSequence({ frameCount }: CanvasSequenceProps) {
     requestAnimationFrame(() => drawFrame(index));
   });
 
-  // Handle window resize
+  // Handle window resize with debouncing
   useEffect(() => {
     const handleResize = () => {
-      if (canvasRef.current) {
-        canvasRef.current.width = window.innerWidth;
-        canvasRef.current.height = window.innerHeight;
-        if (loaded) {
-          drawFrame(Math.min(frameCount - 1, Math.max(0, Math.floor(frameIndex.get()) - 1)));
-        }
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
       }
+      resizeTimeoutRef.current = setTimeout(() => {
+        if (canvasRef.current) {
+          canvasRef.current.width = window.innerWidth;
+          canvasRef.current.height = window.innerHeight;
+          if (loaded) {
+            drawFrame(Math.min(frameCount - 1, Math.max(0, Math.floor(frameIndex.get()) - 1)));
+          }
+        }
+      }, 100);
     };
 
     handleResize(); // Initial setup
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loaded, frameIndex]);
 
   return (
-    <div className="sticky top-0 left-0 w-full h-screen overflow-hidden -z-10 bg-[#101010]">
-      <canvas ref={canvasRef} className="w-full h-full" />
+    <div className="sticky top-0 left-0 w-full h-screen overflow-hidden -z-10 bg-gradient-to-br from-[#0A0A0A] via-[#0F0F12] to-[#0A0A0A]">
+      <canvas 
+        ref={canvasRef} 
+        className="w-full h-full" 
+        style={{
+          filter: "contrast(1.05) brightness(0.95)",
+        }}
+      />
       {!loaded && (
-        <div className="absolute inset-0 flex items-center justify-center text-white/50 text-sm">
-          Loading Cinematic Experience...
+        <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-12 h-12 rounded-full border-2 border-accent-secondary/30 border-t-accent-secondary animate-spin" />
+            <p className="text-white/40 text-sm font-light tracking-wide">
+              Loading Cinematic Experience
+            </p>
+          </div>
         </div>
       )}
     </div>

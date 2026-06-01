@@ -49,6 +49,17 @@
     background: linear-gradient(135deg, rgba(0, 82, 255, 0.15) 0%, rgba(0, 217, 255, 0.1) 100%);
   }
   
+  .btn-nav {
+    @apply relative px-4 py-2 rounded-lg text-sm font-semibold text-white;
+    @apply border border-accent-secondary/40 transition-all duration-500 overflow-hidden;
+    background: linear-gradient(135deg, rgba(0, 82, 255, 0.1) 0%, rgba(0, 217, 255, 0.05) 100%);
+  }
+  
+  .btn-nav:hover {
+    @apply shadow-premium border-accent-secondary/80;
+    background: linear-gradient(135deg, rgba(0, 82, 255, 0.15) 0%, rgba(0, 217, 255, 0.1) 100%);
+  }
+  
   .vignette-overlay {
     @apply absolute inset-0 pointer-events-none;
     background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%);

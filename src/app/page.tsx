@@ -200,7 +200,7 @@ export default function Home() {
         </div>
 
         {/* Vignette overlay */}
-        <div className="vignette-overlay z-5" />
+        <div className="vignette-overlay z-[5]" />
       </div>
     </main>
   );

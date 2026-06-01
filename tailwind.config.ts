@@ -10,13 +10,13 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: [
-          '"system-ui"',
+          'system-ui',
           '"Segoe UI"',
-          '"Roboto"',
+          'Roboto',
           '"Helvetica Neue"',
-          '"Arial"',
+          'Arial',
           '"Noto Sans"',
-          '"sans-serif"',
+          'sans-serif',
         ],
       },
       colors: {
